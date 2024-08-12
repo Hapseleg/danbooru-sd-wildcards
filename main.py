@@ -73,10 +73,6 @@ def process_data(tags, toptagscount, basetag, commontags, filtertags):
 
 def main():
     """Parses command-line arguments and runs the script."""
-    #Example:
-    # https://danbooru.donmai.us/posts.json?login=USERNAME&api_key=APIKEY&tags=fav:USERNAME&limit=2&page=1
-    # https://danbooru.donmai.us/posts.json?tags=fav:albert&limit=2&page=1
-    
     import argparse
     parser = argparse.ArgumentParser(description="Extract certain tags from Danbooru, for Stable diffusion wildcard files")
     parser.add_argument("--tags", help="The tags, for example, 'cat,bird,dog' - csv", required=True)
@@ -90,16 +86,15 @@ def main():
     #parser.add_argument("--minfavcount", help="Minimum amount of fav count (optional) - int", required=False)
     args = parser.parse_args()
 
-    if args.toptagscount:
-        toptagscount = args.toptagscount
-
-
     #construct the url----------------------
     base_url = "https://danbooru.donmai.us/posts.json?"  # Base URL, limit 200 and tag order:favcount
     tags = args.tags.split(",")
     commontags = []
     filtertags = []
     toptagscount = 5
+
+    if args.toptagscount:
+        toptagscount = int(args.toptagscount)
 
     if args.commontags:
         commontags = args.commontags.split(",") 
@@ -130,10 +125,7 @@ def main():
 
     for filter in filtertags:
         base_url += "+" + filter
-        #base_url = base_url[:-1]
 
-
-    # if len(commontags) == 0:
     base_url += "+"
     #construct the url----------------------
     
@@ -146,6 +138,7 @@ def main():
         data = get_data(base_url, tag)
         wildcard_string = process_data(data, toptagscount,tag, commontags, filtertags)
         wildcard_string_list.append(wildcard_string)
+        print(wildcard_string)
         time.sleep(1)
 
     if args.filename:
