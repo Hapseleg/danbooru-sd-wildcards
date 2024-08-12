@@ -21,7 +21,7 @@ def get_data(base_url, tag):
     
     if response.status_code == 200:
         data = response.json()  # Assuming the response is valid JSON
-
+        
         # Extract and split tag_string_general from each object
         for item in data:
             if "tag_string_general" in item:  # Check if "tag_string_general" exists
@@ -55,7 +55,8 @@ def process_data(tags, toptagscount, basetag, commontags, filtertags):
 
     # add the tags to a list of tuples with (word, count)
     for tag in unique_tags:
-        tags_count[tag] = new_tags_list.count(tag)
+        lowered_tag = str(tag).lower()
+        tags_count[lowered_tag] = new_tags_list.count(tag)
 
     # sort by count
     sorted_tags = sorted(tags_count.items(), key=lambda x:x[1], reverse=True)
@@ -68,7 +69,10 @@ def process_data(tags, toptagscount, basetag, commontags, filtertags):
 
     return processed_data
 
-
+def to_lower_case(s):
+    if s:
+        return str(s).lower()
+    return s
 
 
 def main():
@@ -86,9 +90,11 @@ def main():
     #parser.add_argument("--minfavcount", help="Minimum amount of fav count (optional) - int", required=False)
     args = parser.parse_args()
 
+
     #construct the url----------------------
     base_url = "https://danbooru.donmai.us/posts.json?"  # Base URL, limit 200 and tag order:favcount
-    tags = args.tags.split(",")
+    lowered_tags = to_lower_case(args.tags)
+    tags = lowered_tags.split(",")
     commontags = []
     filtertags = []
     toptagscount = 5
@@ -97,9 +103,11 @@ def main():
         toptagscount = int(args.toptagscount)
 
     if args.commontags:
+        commontags = to_lower_case(commontags)
         commontags = args.commontags.split(",") 
 
     if args.filtertags:
+        filtertags = to_lower_case(filtertags)
         filtertags = args.filtertags.split(",")
 
     if args.limit:
