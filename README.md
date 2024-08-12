@@ -8,28 +8,30 @@ The idea is you use a pony checkpoint and want wildcard files. You use this to s
 
 Example:
 So lets say I want more tags for a specific character, for example "son_goku":
-
+```
 input:  
         python main.py --tags son_goku
 output: 
         son_goku, black_hair, breasts, 1girl, 1boy, multiple_boys,
-
+```
 breasts? 1girl?? yes, Danbooru is a lewd place, so lets filter that
-
+```
 input:  
         python main.py --username NAME --apikey KEY --tags son_goku --filtertags solo
 output: 
         son_goku, 1boy, male_focus, spiked_hair, muscular, super_saiyan,
-
+```
 there we go, sfw
 
 Long example:
+```
 input: 
         python main.py --username NAME --apikey KEY --tags orc,minotaur,ogre --commontags 1boy --filtertags solo,male_focus --filename monsters --limit 100 --toptagscount 10
 output:
         orc, 1boy, muscular, muscular_male, colored_skin, bara, tusks, green_skin, mature_male, pectorals, facial_hair, pointy_ears,
         minotaur, 1boy, muscular, furry, horns, furry_male, bara, muscular_male, animal_ears, cow_ears, pectorals, cow_horns,
         ogre, 1boy, colored_skin, horns, bara, monster_boy, red_skin, mature_male, tusks, muscular_male, muscular, pointy_ears,
+```
 
 ```
 usage: main.py [-h] --tags TAGS [--commontags COMMONTAGS] [--filtertags FILTERTAGS] [--toptagscount TOPTAGSCOUNT]
