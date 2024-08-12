@@ -136,9 +136,12 @@ def main():
 
     for tag in tags:
         data = get_data(base_url, tag)
-        wildcard_string = process_data(data, toptagscount,tag, commontags, filtertags)
-        wildcard_string_list.append(wildcard_string)
-        print(wildcard_string)
+        if len(tag) > 0:
+            wildcard_string = process_data(data, toptagscount,tag, commontags, filtertags)
+            wildcard_string_list.append(wildcard_string)
+            print(wildcard_string)
+        else:
+            print(f"NO DATA FOUND FOR {tag} PLEASE CHECK YOUR TAG")
         time.sleep(1)
 
     if args.filename:
