@@ -136,7 +136,7 @@ def main():
 
     for tag in tags:
         data = get_data(base_url, tag)
-        if len(tag) > 0:
+        if len(data) > 0:
             wildcard_string = process_data(data, toptagscount,tag, commontags, filtertags)
             wildcard_string_list.append(wildcard_string)
             print(wildcard_string)
