@@ -3,6 +3,7 @@ import os
 import requests
 import time
 import sys
+import argparse
 
 
 def get_data(url, tt):
@@ -113,18 +114,17 @@ def read_secret_api_file():
 
 def main():
     """Parses command-line arguments and runs the script."""
-    import argparse
     parser = argparse.ArgumentParser(description="Extract certain tags from Danbooru, for Stable diffusion wildcard files")
-    parser.add_argument("--tags", help="The tags, for example, 'cat,bird,dog' - csv", required=True)
-    parser.add_argument("--commontags", help="If you want specific common tags, such as 'no_humans,simple_background' or '1girl' etc (optional) - csv", required=False)
-    parser.add_argument("--filtertags", help="If you want filter tags, such as 'solo' (optional) - csv", required=False)
-    parser.add_argument("--toptagscount", help="Specify the amount of tags you want added, defaults to 5 (optional) - number", required=False)
-    parser.add_argument("--filename", help="If you want it to save it as a txt file in current dir (optional) - string", required=False)
+    parser.add_argument("--tags", metavar='csv', help="The tags, for example, 'cat,bird,dog'", required=True)
+    parser.add_argument("--commontags", metavar='csv', help="If you want specific common tags, such as 'no_humans,simple_background' or '1girl' etc (optional)", required=False)
+    parser.add_argument("--filtertags", metavar='csv', help="If you want filter tags, such as 'solo' (optional)", required=False)
+    parser.add_argument("--toptagscount", metavar='int', help="Specify the amount of tags you want added, defaults to 5 (optional)", required=False)
+    parser.add_argument("--filename", metavar='string', help="If you want it to save it as a txt file in current dir (optional)", required=False)
     #parser.add_argument("--username", help="The username to use with the API(optional) - string", required=False)
     #parser.add_argument("--apikey", help="The API key for authentication (optional) - string", required=False)
-    parser.add_argument("--limit", help="Amount of posts, defaults to 200 (optional) - int", required=False)
-    parser.add_argument("--tagtype", help="Amount of posts, defaults to 200 (optional) - str", required=False)
-    parser.add_argument("--pages", type=int, help="The number of pages to fetch", required=False)
+    parser.add_argument("--limit", metavar='int', help="Amount of posts, defaults to 200 (optional)", required=False)
+    parser.add_argument("--tagtype", metavar='string', help="artist/character/copyright/tags, defaults to tags (optional)", required=False)
+    parser.add_argument("--pages", metavar='int', help="The number of pages to fetch (optional)", required=False)
 
     #parser.add_argument("--minfavcount", help="Minimum amount of fav count (optional) - int", required=False)
     args = parser.parse_args()
@@ -166,7 +166,7 @@ def main():
         base_url += "limit=200"
 
     if args.pages:
-        pages = args.pages
+        pages = int(args.pages) 
 
     # Construct API URL including username and API key if provided
     # if args.apikey:
